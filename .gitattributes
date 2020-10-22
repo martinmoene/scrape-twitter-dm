@@ -1,0 +1,9 @@
+# Auto detect text files and perform LF normalization
+* text=auto
+
+# Custom for CodeBlocks
+*.cbp            text eol=lf
+*.workspace      text eol=lf
+
+# Custom for Visual Code
+*.code-workspace text eol=lf

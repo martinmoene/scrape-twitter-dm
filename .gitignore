@@ -1,0 +1,12 @@
+# Folders
+.mypy_cache
+.vscode
+
+# Node
+node_modules
+
+# Generated JavaScript
+typescript-js
+
+# Python
+*.pyc

@@ -1,0 +1,81 @@
+body {
+    font: normal 1em/1.5em Calibri, Arial, sans-serif;
+    padding: 10px;
+    margin: 10px auto;
+    max-width: 1000px;
+}
+pre {
+    background-color:#eee;
+    padding: 10px;
+}
+code {
+    font: normal 16px Consolas, Monospace;
+}
+h1, h2, h3, h4 {
+    color: #b4b;
+    margin-bottom: .1em;
+    clear: both;
+}
+h1 {
+    line-height: 1.3em;
+    margin-bottom: .5em;
+    font-size: 1.4em;
+}
+h2, h3, h4 {
+    margin-top: 0em;
+    margin-bottom: 0em;
+    font-size: 1.1em;
+    font-weight: normal;
+    text-align: right;
+}
+h2 {
+    display: none;
+}
+h3, h4 {
+    font-size: 1.0em;
+}
+h1 a {
+    color: #a0a;
+}
+a {
+    color: #a0a;
+    text-decoration: none;
+}
+p {
+    margin-top: 0;
+    margin-bottom: 1em;
+}
+ul {
+    -webkit-padding-start: 1.4em;   /* let lists be left-aligned */
+}
+img {
+    margin-top: 10px;
+    margin-left: -0px;
+}
+footer {
+    page-break-after: always;
+}
+.entry {
+    clear: right;
+    margin-bottom: 1em;
+}
+.datesmall {
+    font-size: .8em;
+    color: #a6a;
+    float: right;
+}
+.namedash {
+    color: #aaa;
+}
+.Participant1 {
+    color: #b4b;
+    font-weight: bolder;
+}
+.Participant2 {
+    color: #55a;
+    font-weight: bolder;
+}
+.Participant3 {
+    color: rgb(161, 122, 14);
+    font-weight: bolder;
+}
