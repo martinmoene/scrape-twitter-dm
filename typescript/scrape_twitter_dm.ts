@@ -6,7 +6,7 @@
 //
 // Scrape Twitter Archive for its DMs and create an epub e-book of it.
 //
-// Usage: script/xxxx [-h] [-v] [options...] p1-name:p1-id,p2-name:p2-id[,p3...] twitter-archive [output_path]
+// Usage: script/xxxx [-h] [-v] [options...] [p1-name:]p1-id,p2-name:p2-id[,p3...] twitter-archive [output_path]
 //
 // Output format: {date}\t{sender-name}\t{message}
 //
@@ -266,7 +266,7 @@ import { createWriteStream } from "fs";
 function print_usage( out : Writable, code : number ) : number
 {
 	out.write(`
-Usage: node scrape_twitter_dm p1-name:p1-id,p2[,p3...] path/to/twitter-archive.zip [path/to/twitter-archive.txt]
+Usage: node scrape_twitter_dm [p1-name:]p1-id,p2[,p3...] path/to/twitter-archive.zip [path/to/twitter-archive.txt]
 
 Create structured text file with entries: {date}\\t{sender-name}\\t{message}
 `	)
@@ -313,8 +313,8 @@ async function scrape_twitter_dm( participants : Participants, ziparchive_path :
 	stderr.write('\nDone.\n')
 }
 
-// Convert list of participants to dictionary with keys both on name and id
-// Input: Name1:id1,Name2:id2[, ...]
+// Convert list of participants to dictionary with keys both on id and name (if given)
+// Input: [Name1:]id1,[Name2:]id2[, ...]
 
 function to_participants( text: string ) : Participants
 {
@@ -336,7 +336,7 @@ function main( argv : string[] )
 	// commandline arguments: node script participants ziparchive [out_path]
 	// argv[0]: node
 	// argv[1]: script
-	// argv[2]: participants: p1-name:p1-id,p2-name:p2-id[,p3...]
+	// argv[2]: participants: [p1-name:]p1-id,p2-name:p2-id[,p3...]
 	// argv[3]: path/to/ziparchive
 	// argv[4]: output path, defaults to stdout
 
