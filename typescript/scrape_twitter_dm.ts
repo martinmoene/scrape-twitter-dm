@@ -94,18 +94,6 @@ function to_id( name_or_id : string, participants : Participants ) : string
 	return participants[name_or_id] == undefined ? name_or_id : participants[name_or_id]
 }
 
-// Require two or more participants:
-
-function require_participants( out : Writable, participants : Participants ) : boolean
-{
-	if ( count( participants ) < 2 )
-	{
-		out.write(`\nError: two or more participants expected, one given: '${participants[0]}'\n\n`)
-		return true; // Error
-	}
-	return false; // Ok
-}
-
 // Print participant names and ids:
 
 function print_participants( out : Writable, participants : Participants )
@@ -121,21 +109,16 @@ function print_participants( out : Writable, participants : Participants )
 
 // Bailout if not a GDPR archive (required for DMs):
 
-function require_gdpr( out : Writable, archive : TwitterArchive ) : boolean
+function is_gdpr( archive : TwitterArchive ) : boolean
 {
-	if ( ! archive.is_gdpr === true )
-	{
-		out.write("Bailing out as archive is not a GDPR archive (required for access to DMs)\n")
-		return true; // Error
-	}
-	return false // Ok
+	return archive.is_gdpr === true
 }
 
 // Inform if GDPR archive type:
 
 function print_gdpr( out : Writable, archive : TwitterArchive )
 {
-	out.write( archive.is_gdpr === true 
+	out.write( is_gdpr( archive )
 		? "Archive is a GDPR archive (required for access to DMs)\n"
 		: "Archive is not a GDPR archive (required for access to DMs)\n"
 	)
@@ -301,8 +284,11 @@ async function scrape_twitter_dm( participants : Participants, ziparchive_path :
 	if ( output_path.length )
 		stderr.write(`\nOutput: '${output_path}'.\n`)
 
-	if ( require_participants( stderr, participants ) )
+	if ( count( participants ) < 2 )
+	{
+		stderr.write(`\nError: two or more participants expected, one given: '${participants[0]}'\n\n`)
 		return
+	}
 
 	print_participants( stderr, participants ) 
 
@@ -314,9 +300,12 @@ async function scrape_twitter_dm( participants : Participants, ziparchive_path :
 	print_user_info( stderr, archive )
 	print_conversations( stderr, archive )
 
-	if ( require_gdpr( stderr, archive ) )
+	if ( !is_gdpr( archive ) )
+	{
+		stderr.write("Bailing out as archive is not a GDPR archive (required for access to DMs)\n")
 		return
-
+	}
+	
 	const out = output_path.length > 0 ?  createWriteStream( output_path) : stdout
 
 	print_messages( out, participants, archive )
