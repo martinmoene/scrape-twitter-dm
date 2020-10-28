@@ -1,6 +1,23 @@
+# Configuration file for EditorConfig, see https://EditorConfig.org
+
+# Ignore any other files further up in the file system
+root = true
+
+# All files:
 [*]
 indent_style = tab
 indent_size = 4
+insert_final_newline = true
+trim_trailing_whitespace = true
 
+# Markdown files: keep trailing space-pair as line-break
+[*.md]
+trim_trailing_whitespace = false
+
+# Python scripts:
 [*.py]
 indent_style = space
+
+# Makefiles: Tab indentation (no size specified)
+[Makefile]
+indent_style = tab
