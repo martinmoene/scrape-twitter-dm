@@ -233,7 +233,7 @@ function to_line( text : string ) : string
 
 function has_id( id : string, conversation : Conversation ) : boolean
 {
-	return is_numeric( id ) && conversation.participants.has( id )
+	return conversation.participants.has( id )
 }
 
 // true if given participants participate in the conversation:
@@ -242,9 +242,9 @@ function has_participants( conversation : Conversation, participants : Participa
 {
 	for ( const key in participants )
 	{
-		if ( !has_id( key, conversation ) )
+		if ( is_numeric( key ) && !has_id( key, conversation ) )
 			return false;
-		}
+	}
 	return true;
 }
 
