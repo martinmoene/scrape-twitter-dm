@@ -4,8 +4,9 @@ Create an e-book from direct messages (DMs) in a GDPR twitter archive.
 
 ## Dependencies
 
-- [npm](https://www.npmjs.com/), typescript, node
-- [twitter-archive-reader](https://github.com/alkihis/twitter-archive-reader) (TypeScript)
+- [npm](https://www.npmjs.com/), typescript, node.
+- [twitter-archive-reader](https://github.com/alkihis/twitter-archive-reader) (TypeScript).
+- [Python](https://www.python.org/).
 
 ## Prerequisites
 
@@ -44,7 +45,7 @@ Create structured text file with entries: {date}\t{sender-name}\t{message}
 
 ## script/scrape_twitter_txt_epub.py
 
-Create an e-book from a file `message.txt` created with `scrape_twitter_dm.js`. As an intermediate step, `scrape_twitter_txt_epub.py` create a file with the messages in markdown format.
+Create an e-book from a file `message.txt` created with `scrape_twitter_dm.js`. As an intermediate step, `scrape_twitter_txt_epub.py` creates a file with the messages in markdown format.
 
 Usage of script/scrape_twitter_txt_epub.py
 
