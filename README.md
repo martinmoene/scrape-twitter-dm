@@ -43,6 +43,15 @@ Usage: node scrape_twitter_dm p1-name:p1-id,p2[,p3...] path/to/twitter-archive.z
 Create structured text file with entries: {date}\t{sender-name}\t{message}
 ```
 
+Sample output
+
+```Text
+2020-07-07T01:34:56.789Z	Sender1-name	Message text.
+2020-07-07T02:34:56.789Z	Sender2-name	Message text.
+2020-07-07T03:34:56.789Z	Sender1-name	Message text.
+...
+```
+
 ## script/scrape_twitter_txt_epub.py
 
 Create an e-book from a file `message.txt` created with `scrape_twitter_dm.js`. As an intermediate step, `scrape_twitter_txt_epub.py` creates a file with the messages in markdown format.
