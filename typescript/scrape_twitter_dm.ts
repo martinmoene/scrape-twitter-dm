@@ -79,7 +79,7 @@ function is_numeric( text : string ) : boolean
 function to_name( name_or_id : string, participants : Participants ) : string
 {
 	if ( is_numeric( name_or_id ) )
-		return participants[name_or_id] == undefined ? '[unknown]' : participants[name_or_id]
+		return participants[name_or_id] == undefined ? name_or_id : participants[name_or_id]
 	
 	return name_or_id
 }
@@ -91,7 +91,7 @@ function to_id( name_or_id : string, participants : Participants ) : string
 	if ( is_numeric( name_or_id ) )
 		return name_or_id
 	
-	return participants[name_or_id]
+	return participants[name_or_id] == undefined ? name_or_id : participants[name_or_id]
 }
 
 // Require two or more participants:
