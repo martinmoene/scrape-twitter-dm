@@ -80,7 +80,7 @@ function to_name( name_or_id : string, participants : Participants ) : string
 {
 	if ( is_numeric( name_or_id ) )
 		return participants[name_or_id] == undefined ? name_or_id : participants[name_or_id]
-	
+
 	return name_or_id
 }
 
@@ -90,7 +90,7 @@ function to_id( name_or_id : string, participants : Participants ) : string
 {
 	if ( is_numeric( name_or_id ) )
 		return name_or_id
-	
+
 	return participants[name_or_id] == undefined ? name_or_id : participants[name_or_id]
 }
 
@@ -139,7 +139,7 @@ User ID: ${user.id}
 You are${user.verified ? "" : " not"} verified
 Creation date: ${archive.user.created_at}
 Creation IP: ${archive.user.account_creation_ip}
-`);	
+`);
 
 	// List the used screen names (@) over time
 
@@ -168,7 +168,7 @@ function print_conversations( out : Writable, archive : TwitterArchive )
 
 	out.write(`\nThere are #${conversations.length} conversations here.\n\n`);
 
-	for ( const text of conversations.map( c => 
+	for ( const text of conversations.map( c =>
 		`Conversation ${c.id} with users ${[...c.participants].join(', ')}, containing ${c.length} messages.\n`) )
 	{
 		out.write(text)
@@ -181,7 +181,7 @@ function open_archive( out : Writable, ziparchive_path : string ) : TwitterArchi
 {
 	const archive = new TwitterArchive( ziparchive_path );
 
-	// Initialization can be long (unzipping, tweets & DMs reading...) 
+	// Initialization can be long (unzipping, tweets & DMs reading...)
 	// So archive supports events, you can listen for initialization steps
 	// See all available listeners in Events section.
 
@@ -277,7 +277,7 @@ Create structured text file with entries: {date}\\t{sender-name}\\t{message}
 // Print conversation in given archive between given participants:
 //
 // Format: {date}\t{sender-name}\t{message}
-// 
+//
 
 async function scrape_twitter_dm( participants : Participants, ziparchive_path : string, output_path : string )
 {
@@ -290,12 +290,12 @@ async function scrape_twitter_dm( participants : Participants, ziparchive_path :
 		return
 	}
 
-	print_participants( stderr, participants ) 
+	print_participants( stderr, participants )
 
 	const archive = open_archive( stderr, ziparchive_path );
 
 	await archive.ready();
-	
+
 	print_gdpr( stderr, archive )
 	print_user_info( stderr, archive )
 	print_conversations( stderr, archive )
@@ -305,7 +305,7 @@ async function scrape_twitter_dm( participants : Participants, ziparchive_path :
 		stderr.write("Bailing out as archive is not a GDPR archive (required for access to DMs)\n")
 		return
 	}
-	
+
 	const out = output_path.length > 0 ?  createWriteStream( output_path) : stdout
 
 	print_messages( out, participants, archive )
