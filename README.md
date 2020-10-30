@@ -36,11 +36,14 @@ Write direct messages (DMs) from GDPR twitter archive as text file with a messag
 Usage of typescript-js/scrape_twitter_dm.js (compiled from `scrape_twitter_dm.ts`)
 
 ```Text
-prompt> node typescript-js/scrape_twitter_dm.js
-
-Usage: node scrape_twitter_dm p1-name:p1-id,p2[,p3...] path/to/twitter-archive.zip [path/to/twitter-archive.txt]
+Usage: node scrape_twitter_dm [options] path/to/twitter-archive.zip [[p1-name:]p1-id,p2[,p3...]] [path/to/twitter-archive.txt]
 
 Create structured text file with entries: {date}\t{sender-name}\t{message}
+
+Options:
+  -h, --help                   this help message
+  -l, --list-conversations     list conversations in given archive
+  -u, --list-user-information  list information on the owner of the given archive
 ```
 
 Sample output

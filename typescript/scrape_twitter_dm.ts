@@ -266,14 +266,14 @@ import { createWriteStream } from "fs";
 function print_usage( out : Writable, code : number ) : number
 {
 	out.write(`
-Usage: node scrape_twitter_dm [p1-name:]p1-id,p2[,p3...] path/to/twitter-archive.zip [path/to/twitter-archive.txt]
+Usage: node scrape_twitter_dm [options] path/to/twitter-archive.zip [[p1-name:]p1-id,p2[,p3...]] [path/to/twitter-archive.txt]
 
 Create structured text file with entries: {date}\\t{sender-name}\\t{message}
 
 Options:
   -h, --help                   this help message
-  -l, --list-conversations     list conversations in archive
-  -u, --list-user-information  list information on the owner of the archive
+  -l, --list-conversations     list conversations in given archive
+  -u, --list-user-information  list information on the owner of the given archive
 `	)
 	return code
 }
@@ -407,9 +407,12 @@ function main( argv : string[] )
 	// commandline positional arguments: node script participants ziparchive [out_path]
 	// argv[0]: node
 	// argv[1]: script
-	// argv[2]: participants: [p1-name:]p1-id,p2-name:p2-id[,p3...]
-	// argv[3]: path/to/ziparchive
+	// argv[2]: path/to/ziparchive
+	// argv[3]: participants: [p1-name:]p1-id,p2-name:p2-id[,p3...]
 	// argv[4]: output path, defaults to stdout
+
+	// path to script:
+	const prog = process.argv[1]
 
 	const [opt, pos] = split_arguments( argv.slice(2) )
 
@@ -418,15 +421,16 @@ function main( argv : string[] )
 		exit( print_usage( stderr, 0 ) )
 	}
 
+	if ( pos.length < 1 )
+	{
+		stderr.write(`\nExpecting path/to/ziparchive, got none. See '${prog} --help' for more information.\n\n`)
+		exit(1)
+	}
+
+	const ziparchive = pos[0]
+
 	if ( opt.list_conversations || opt.list_user_information )
 	{
-		if ( pos.length != 1 )
-		{
-			exit( print_usage( stderr, 1 ) )
-		}
-
-		const ziparchive = pos[0]
-
 		if ( opt.list_conversations )
 			list_conversations( stdout, ziparchive )
 
@@ -436,14 +440,19 @@ function main( argv : string[] )
 		return
 	}
 
-	if ( 2 > pos.length || pos.length > 3 )
+	if ( pos.length < 2 )
+	{
+		stderr.write(`\nExpecting participants, got none. See '${prog} --help' for more information.\n\n`)
+		exit(1)
+	}
+
+	if ( pos.length > 3 )
 	{
 		exit( print_usage( stderr, 1 ) )
 	}
 
 	const output       = pos[2] || ''
-	const ziparchive   = pos[1]
-	const participants = to_participants( pos[0] )
+	const participants = to_participants( pos[1] )
 
 	scrape_twitter_dm( participants, ziparchive, output )
 }
