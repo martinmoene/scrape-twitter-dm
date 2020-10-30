@@ -269,8 +269,35 @@ function print_usage( out : Writable, code : number ) : number
 Usage: node scrape_twitter_dm [p1-name:]p1-id,p2[,p3...] path/to/twitter-archive.zip [path/to/twitter-archive.txt]
 
 Create structured text file with entries: {date}\\t{sender-name}\\t{message}
+
+Options:
+  -h, --help                   this help message
+  -l, --list-conversations     list conversations in archive
+  -u, --list-user-information  list information on the owner of the archive
 `	)
 	return code
+}
+
+// Print available conversations in given archive:
+
+async function list_conversations( out : Writable, ziparchive_path : string )
+{
+	const archive = open_archive( stderr, ziparchive_path );
+
+	await archive.ready();
+
+	print_conversations( out, archive )
+}
+
+// Print information on archive owner:
+
+async function list_user_information( out : Writable, ziparchive_path : string )
+{
+	const archive = open_archive( stderr, ziparchive_path );
+
+	await archive.ready();
+
+	print_user_info( out, archive )
 }
 
 //
@@ -297,8 +324,6 @@ async function scrape_twitter_dm( participants : Participants, ziparchive_path :
 	await archive.ready();
 
 	print_gdpr( stderr, archive )
-	print_user_info( stderr, archive )
-	print_conversations( stderr, archive )
 
 	if ( !is_gdpr( archive ) )
 	{
@@ -306,7 +331,7 @@ async function scrape_twitter_dm( participants : Participants, ziparchive_path :
 		return
 	}
 
-	const out = output_path.length > 0 ?  createWriteStream( output_path) : stdout
+	const out = output_path.length > 0 ? createWriteStream( output_path) : stdout
 
 	print_messages( out, participants, archive )
 
@@ -329,25 +354,96 @@ function to_participants( text: string ) : Participants
 	return result
 }
 
+// Split option in option and value, if any:
+
+function split_option( arg : string ) : [ string, string ]
+{
+	// ToDo: no '--option=value' used yet
+	return [arg,'']
+}
+
+// Options:
+
+interface Options
+{
+	help : boolean
+	list_conversations: boolean
+	list_user_information : boolean
+}
+
+// Split arguments in options and positional arguments:
+
+function split_arguments( argv : string[] ) : [ Options, string[] ]
+{
+	// path to script:
+	const prog = process.argv[1]
+
+	var option : Options = { help:false, list_conversations:false, list_user_information:false }
+	var position : string[] = []
+	var in_options : boolean = true
+
+	for ( const arg of argv )
+	{
+		if ( in_options )
+		{
+			const [opt, val] = split_option( arg )
+
+			if      ( opt[0] != '-'  ) { in_options = false }
+			else if ( opt    == '--' ) { in_options = false; continue  }
+			else if ( opt    == '-h' || opt == '--help'                  ) { option.help = true; continue }
+			else if ( opt    == '-l' || opt == '--list-conversations'    ) { option.list_conversations = true; continue }
+			else if ( opt    == '-u' || opt == '--list-user-information' ) { option.list_user_information = true; continue }
+			else { stderr.write(`\nUnrecognized option '${opt}', see '${prog} --help' for more information.\n\n`); exit(1) }
+		}
+		position.push(arg)
+	}
+	return [option, position]
+}
+
 // Main entry, handle commandline:
 
 function main( argv : string[] )
 {
-	// commandline arguments: node script participants ziparchive [out_path]
+	// commandline positional arguments: node script participants ziparchive [out_path]
 	// argv[0]: node
 	// argv[1]: script
 	// argv[2]: participants: [p1-name:]p1-id,p2-name:p2-id[,p3...]
 	// argv[3]: path/to/ziparchive
 	// argv[4]: output path, defaults to stdout
 
-	if ( 4 > argv.length || argv.length > 5 )
+	const [opt, pos] = split_arguments( argv.slice(2) )
+
+	if ( opt.help )
+	{
+		exit( print_usage( stderr, 0 ) )
+	}
+
+	if ( opt.list_conversations || opt.list_user_information )
+	{
+		if ( pos.length != 1 )
+		{
+			exit( print_usage( stderr, 1 ) )
+		}
+
+		const ziparchive = pos[0]
+
+		if ( opt.list_conversations )
+			list_conversations( stdout, ziparchive )
+
+		if ( opt.list_user_information )
+			list_user_information( stdout, ziparchive )
+
+		return
+	}
+
+	if ( 2 > pos.length || pos.length > 3 )
 	{
 		exit( print_usage( stderr, 1 ) )
 	}
 
-	const output       = argv[4] || ''
-	const ziparchive   = argv[3]
-	const participants = to_participants( argv[2] )
+	const output       = pos[2] || ''
+	const ziparchive   = pos[1]
+	const participants = to_participants( pos[0] )
 
 	scrape_twitter_dm( participants, ziparchive, output )
 }
