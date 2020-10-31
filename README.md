@@ -25,8 +25,18 @@ tsc -p .
 Create an e-book:
 
 ```Text
-node typescript-js/scrape_twitter p1-name:p1-id,p2-name,p2-id path/to/twitter-archive.zip path/to/messages.txt
-python script/scrape_twitter_txt_md.py ... [WIP]
+call node typescript-js/scrape_twitter.js \
+    Name1:id1,Name2:id2 path/to/twitter-archive.zip epub/messages-name1-name2.txt
+
+python script/scrape_twitter_txt_epub.py --verbose \
+   --title="Twitter DM Name1 - Name2" \
+   --author="Name1 and Name2" \
+   --date="2019 - 2020" \
+   --cover-image="media/cover.jpg" \
+   --css="epub/template/style.css" \
+   --css-participants=Name1:sender1,Name2:sender2 \
+   --epub-template="epub/template/epub_template.html" \
+   --dst-folder epub epub/messages-name1-name2.txt
 ```
 
 ## typescript/scrape_twitter_dm.ts
@@ -64,8 +74,8 @@ Usage of script/scrape_twitter_txt_epub.py
 ```Text
 prompt>python script\scrape_twitter_txt_epub.py -h
 usage: scrape_twitter_txt_epub.py [-h] [-v] [--dry-run] [--md-format format] [--epub-template template] [--dst-folder path]
-                                  [--cover-image path] [--front-matter path] [--css path] [--author text] [--title text]
-                                  [--date text]
+                                  [--cover-image path] [--front-matter path] [--css path] [--css-participants styles]
+                                  [--author text] [--title text] [--date text] [--publisher text] [--rights text]
                                   path
 
 Convert direct messages from text in source folder via markdown to epub in destination folder.
@@ -84,7 +94,11 @@ optional arguments:
   --cover-image path    file with image for cover of e-book
   --front-matter path   file with front matter of epub
   --css path            file with css style sheet for epub
+  --css-participants styles
+                        names with css styles, like name1:p1,name2:p2
   --author text         author of e-book
   --title text          title of e-book
   --date text           date or year range of e-book
+  --publisher text      publisher of e-book
+  --rights text         publisher of e-book
 ```
