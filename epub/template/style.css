@@ -67,15 +67,15 @@ footer {
 .namedash {
     color: #aaa;
 }
-.Participant1 {
+.sender1 {
     color: #b4b;
     font-weight: bolder;
 }
-.Participant2 {
+.sender2 {
     color: #55a;
     font-weight: bolder;
 }
-.Participant3 {
+.sender3 {
     color: rgb(161, 122, 14);
     font-weight: bolder;
 }
