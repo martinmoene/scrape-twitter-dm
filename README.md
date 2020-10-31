@@ -2,6 +2,8 @@
 
 Create an e-book from direct messages (DMs) in a GDPR twitter archive.
 
+Note: currently the content is limited to text and links, media are not yet handled.
+
 ## Dependencies
 
 - [npm](https://www.npmjs.com/), typescript, node.
