@@ -27,7 +27,7 @@ tsc -p .
 Create an e-book:
 
 ```Text
-call node typescript-js/scrape_twitter.js \
+call node typescript-js/scrape_twitter_dm.js \
     Name1:id1,Name2:id2 path/to/twitter-archive.zip epub/messages-name1-name2.txt
 
 python script/scrape_twitter_txt_epub.py --verbose \
