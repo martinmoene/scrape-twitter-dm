@@ -191,23 +191,42 @@ def main():
         help='do not perform action, only report progress')
 
     parser.add_argument(
-        '--md-format',
-        default='markdown',
-        metavar='format',
-        type=str,
-        help='pandoc markdown format, e.g. \'markdown-tex_math_dollars\'')
-
-    parser.add_argument(
-        '--epub-template',
-        metavar='template',
-        type=str,
-        help='pandoc epub template; see `pandoc -D epub`')
-
-    parser.add_argument(
         '--dst-folder',
         metavar='path',
         type=str,
         help='folder to write markdown and epub files to (required)')
+
+    parser.add_argument(
+        '--title',
+        metavar='text',
+        type=str,
+        help='title of e-book')
+
+    parser.add_argument(
+        '--author',
+        metavar='text',
+        type=str,
+        help='author of e-book')
+
+    parser.add_argument(
+        '--date',
+        metavar='text',
+        type=str,
+        help='date or year range of e-book')
+
+    parser.add_argument(
+        '--publisher',
+        metavar='text',
+        default=None,
+        type=str,
+        help='publisher of e-book')
+
+    parser.add_argument(
+        '--rights',
+        metavar='text',
+        default=None,
+        type=str,
+        help='rights of e-book')
 
     parser.add_argument(
         '--cover-image',
@@ -231,39 +250,20 @@ def main():
         '--css-participants',
         metavar='styles',
         type=str,
-        help='names with css styles, like name1:p1,name2:p2')
+        help='names with css styles, like name1:sender1,name2:sender2')
 
     parser.add_argument(
-        '--author',
-        metavar='text',
+        '--epub-template',
+        metavar='tmpl',
         type=str,
-        help='author of e-book')
+        help='pandoc epub template; see `pandoc -D epub`')
 
     parser.add_argument(
-        '--title',
-        metavar='text',
+        '--md-format',
+        default='markdown',
+        metavar='format',
         type=str,
-        help='title of e-book')
-
-    parser.add_argument(
-        '--date',
-        metavar='text',
-        type=str,
-        help='date or year range of e-book')
-
-    parser.add_argument(
-        '--publisher',
-        metavar='text',
-        default=None,
-        type=str,
-        help='publisher of e-book')
-
-    parser.add_argument(
-        '--rights',
-        metavar='text',
-        default=None,
-        type=str,
-        help='publisher of e-book')
+        help='pandoc markdown format, e.g. \'markdown-tex_math_dollars\'')
 
     parser.add_argument(
         'filename',

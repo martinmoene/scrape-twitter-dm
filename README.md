@@ -73,9 +73,9 @@ Usage of script/scrape_twitter_txt_epub.py
 
 ```Text
 prompt>python script\scrape_twitter_txt_epub.py -h
-usage: scrape_twitter_txt_epub.py [-h] [-v] [--dry-run] [--md-format format] [--epub-template template] [--dst-folder path]
-                                  [--cover-image path] [--front-matter path] [--css path] [--css-participants styles]
-                                  [--author text] [--title text] [--date text] [--publisher text] [--rights text]
+usage: scrape_twitter_txt_epub.py [-h] [-v] [--dry-run] [--dst-folder path] [--title text] [--author text] [--date text]
+                                  [--publisher text] [--rights text] [--cover-image path] [--front-matter path] [--css path]
+                                  [--css-participants styles] [--epub-template tmpl] [--md-format format]
                                   path
 
 Convert direct messages from text in source folder via markdown to epub in destination folder.
@@ -87,18 +87,17 @@ optional arguments:
   -h, --help            show this help message and exit
   -v, --verbose         report progress
   --dry-run             do not perform action, only report progress
-  --md-format format    pandoc markdown format, e.g. 'markdown-tex_math_dollars'
-  --epub-template template
-                        pandoc epub template; see `pandoc -D epub`
   --dst-folder path     folder to write markdown and epub files to (required)
+  --title text          title of e-book
+  --author text         author of e-book
+  --date text           date or year range of e-book
+  --publisher text      publisher of e-book
+  --rights text         rights of e-book
   --cover-image path    file with image for cover of e-book
   --front-matter path   file with front matter of epub
   --css path            file with css style sheet for epub
   --css-participants styles
-                        names with css styles, like name1:p1,name2:p2
-  --author text         author of e-book
-  --title text          title of e-book
-  --date text           date or year range of e-book
-  --publisher text      publisher of e-book
-  --rights text         publisher of e-book
+                        names with css styles, like name1:sender1,name2:sender2
+  --epub-template tmpl  pandoc epub template; see `pandoc -D epub`
+  --md-format format    pandoc markdown format, e.g. 'markdown-tex_math_dollars'
 ```
