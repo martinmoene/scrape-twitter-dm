@@ -35,6 +35,7 @@ import argparse
 
 from datetime import datetime
 
+last_time = None
 last_year = None
 last_mnth = None
 last_date = None
@@ -72,12 +73,14 @@ def to_name(name):
     return '<span class={css_class}>{name}</span> <span class=namedash>&ndash;</span> '.format(css_class=to_css_class(name), name=name)
 
 def to_heading(time):
+    global last_time
     global last_year
     global last_mnth
     global last_date
     # year = ''
     mnth = ''
     date = ''
+    last_time = time
     if last_year != to_year_only(time):
         last_year = to_year_only(time)
         # year = "## {year}\n\n".format(year=last_year)
@@ -128,6 +131,15 @@ def create_css_participant_styles(args):
             key, value = arg.split(':')
             css_name_dict[key] = value
 
+def split_line(line):
+    """Return elements time, name, text of line, handling format errors."""
+    try:
+        time, name, text = line.split('\t')
+        return [time, name, text]
+    except ValueError:
+        sys.stderr.write("\nError reading line: '{}'\n".format(line) )
+        return [last_time, 'Unknown', "**Error reading line**: '{}'".format(line)]
+
 def convert_dm_text_markdown(args, dm_text_path, dm_markdown_path, verbose):
     """- Create markdown '{}' from messages collected in '{}'."""
     # print( args )
@@ -138,8 +150,9 @@ def convert_dm_text_markdown(args, dm_text_path, dm_markdown_path, verbose):
     with codecs.open(dm_markdown_path, "w", "utf-8", errors='surrogateescape') as out:
         with codecs.open(dm_text_path, "r", "utf-8", errors='surrogateescape') as f:
             for line in f:
-                time, name, text = line.split('\t')
-                out.write("{heading}<div class=entry>{name}{text}&ensp;{date}\n</div>\n\n".format(heading=to_heading(time), name=to_name(name), text=to_text(text), date=to_small_date(time)) )
+                time, name, text = split_line(line)
+                out.write("{heading}<div class=entry>{name}{text}&ensp;{date}\n</div>\n\n".
+                    format(heading=to_heading(time), name=to_name(name), text=to_text(text), date=to_small_date(time)) )
 
 def convert_dm_markdown_epub(args, dm_text_path, dm_epub_path, verbose):
     """- Create epub '{}' from messages collected in '{}'."""
