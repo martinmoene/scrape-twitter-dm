@@ -159,7 +159,7 @@ def convert_dm_markdown_epub(args, dm_text_path, dm_epub_path, verbose):
     if verbose:
         print(convert_dm_markdown_epub.__doc__.format(dm_epub_path, dm_text_path))
 
-    pandoc_tpl = '{pandoc} -tmarkdown-smart --self-contained --toc-depth={toc_depth} --epub-chapter-level={chapter_level} --metadata=author:"{author}" --metadata=title:"{title}" {date} {publisher} {rights} {cover} --css="{css}" --from="{fmt_from}" --to="{fmt_to}" {template} -o "{output}" "{input}"'
+    pandoc_tpl = '{pandoc} -tmarkdown-smart --embed-resources --standalone --toc-depth={toc_depth} --split-level={chapter_level} --metadata=author:"{author}" --metadata=title:"{title}" {date} {publisher} {rights} {cover} --css="{css}" --from="{fmt_from}" --to="{fmt_to}" {template} -o "{output}" "{input}"'
 
     pandoc_cmd = pandoc_tpl.format(
         pandoc='pandoc',
